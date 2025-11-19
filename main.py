@@ -6,7 +6,7 @@ def get_name():
 
 
 ##### main part of script
-print("Hello World")
+print("Hello World - welcome to planet Earth")
 name = get_name()
 birth_year = int(input("What is your birth year? "))
 leap_year = gregorian.is_leap_year(birth_year)
