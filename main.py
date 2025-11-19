@@ -13,5 +13,5 @@ leap_year = gregorian.is_leap_year(birth_year)
 if leap_year:
     print("That was a leap year!")
 else:
-    print("Stepping on toes.")
+    print("That was not a leap year.")
 
