@@ -28,7 +28,7 @@ def circle_generation(origin, R, N, method):
     Y_points = []
 
     if method == 1: # Theta for fixed-point method
-        theta = []
+        theta = [None]*N
         for n in range(N):
             theta[n] = 2*np.pi*(n/N)
 
