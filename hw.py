@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from math import sqrt
 
 # Initializing user inputs
 def initialize():
@@ -22,6 +23,16 @@ def rng(N):
     rand_numbers = np.random.default_rng().choice(10*N, size=N, replace=False)
     return rand_numbers
 
+def fixed_spacing_calcs(X_points, Y_points):
+    X1 = X_points[0]
+    Y1 = Y_points[0]
+    X2 = X_points[1]
+    Y2 = Y_points[1]
+    spacing = sqrt((X2-X1)**2 + (Y2-Y1)**2)**0.5
+    atriangle = 0.5*spacing*sqrt(R**2-((spacing**2)/4))
+    area_est = atriangle*len(X_points)
+    perimeter_est = spacing*len(X_points)
+    return perimeter_est, area_est
 # Generates a circle depending on the method chosen. Returns points on circle.
 def circle_generation(origin, R, N, method):
     X_points = []
@@ -102,4 +113,6 @@ initialize()
 circle = circle_generation(origin, R, N, method)
 monte_carlo_integration(R, origin)
 pi_est = estimate_pi()
+print(fixed_spacing_calcs(circle[0],circle[1]))
+print(circle[0],circle[1])
 print('Using Monte Carlo integration, pi is estimated to be ' + str(pi_est) + ', which has an error of ' + str(abs(100*(np.pi - pi_est)/np.pi)) + '%.')
