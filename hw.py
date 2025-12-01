@@ -49,8 +49,11 @@ def circle_generation(origin, R, N, method):
 
 
 # Extra credit 2: Monte Carlo circle integration
-def monte_carlo_integration(R, origin):
-    N = [1 + n for n in range(5000)]
+def monte_carlo_integration(R, origin, range_N = True, plot = True):
+    if range_N == True:
+        N = [1 + n for n in range(5000)]
+    else:
+        N = [10000]
     A_circle = []
 
     # Iterating through different sample sizes of random points
@@ -75,14 +78,28 @@ def monte_carlo_integration(R, origin):
         in_out_ratio = len(inside_X_points)/len(X_points)
         A_circle.append(A_square*in_out_ratio)
 
-    # Plotting relationship between number of random points and area of circle
-    plt.plot(N, A_circle, label = 'Approximated Area')
-    plt.plot([N[0], N[-1]], [np.pi*R**2, np.pi*R**2], label = 'Theoretical Area')
-    plt.xlim(N[0], N[-1])
-    plt.legend()
-    plt.show()
+    if plot == True:
+        # Plotting relationship between number of random points and area of circle
+        plt.plot(N, A_circle, label='Approximated Area')
+        plt.plot([N[0], N[-1]], [np.pi * R ** 2, np.pi * R ** 2], label='Theoretical Area')
+        plt.xlim(N[0], N[-1])
+        plt.legend()
+        plt.show()
+
+    return A_circle[-1]
+
+
+# Extra credit 3: estimating pi with Monte Carlo integration
+def estimate_pi():
+    # Use Monte Carlo integration on a circle with R = 10,000 and N = 5000, for higher fidelity
+    A = monte_carlo_integration(10000, [0,0], range_N = False, plot = False)
+    pi_est = A/(10000**2)    # Estimating pi using A = pi*R^2
+
+    return pi_est
 
 # Running code
 initialize()
 circle = circle_generation(origin, R, N, method)
 monte_carlo_integration(R, origin)
+pi_est = estimate_pi()
+print('Using Monte Carlo integration, pi is estimated to be ' + str(pi_est) + ', which has an error of ' + str(abs(100*(np.pi - pi_est)/np.pi)) + '%.')
