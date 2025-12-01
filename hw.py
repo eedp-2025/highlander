@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from math import sqrt
+from math import sqrt, dist, atan2
+
 
 # Initializing user inputs
 def initialize():
@@ -18,10 +19,12 @@ def initialize():
     while method != 1 and method != 2:
         method = int(input("Invalid input, type either 1 or 2 for method: "))
 
+
 # Random number generator. The factor of 10 is to allow for non-integer values when implemented.
 def rng(N):
-    rand_numbers = np.random.default_rng().choice(10*N, size=N, replace=False)
+    rand_numbers = np.random.default_rng(seed=42).choice(10*N, size=N, replace=False)
     return rand_numbers
+
 
 def fixed_spacing_calcs(X_points, Y_points):
     X1 = X_points[0]
@@ -33,6 +36,41 @@ def fixed_spacing_calcs(X_points, Y_points):
     area_est = atriangle*len(X_points)
     perimeter_est = spacing*len(X_points)
     return perimeter_est, area_est
+
+# Sort the list of coordinates based on polar coord theta value (radians)
+def sort_coords(X_points, Y_points, cx, cy):
+    angle_dict = {}
+    for i in range(len(X_points)):
+        angle = atan2(Y_points[i] - cy, X_points[i] - cx)  # in radians
+        angle_dict[X_points[i], Y_points[i]] = angle
+
+    sorted_angles = dict(sorted(angle_dict.items(), key=lambda item: item[1]))
+    sorted_coords = list(sorted_angles.keys())
+    return sorted_coords
+
+
+def random_spacing_calcs(X_points, Y_points):
+    perimeter_est = 0
+    area_est = 0
+
+    sorted_coords = sort_coords(X_points, Y_points, origin[0], origin[1])
+    print(sorted_coords)
+    for i in range(len(sorted_coords) - 1):
+        X1 = sorted_coords[i][0]
+        Y1 = sorted_coords[i][1]
+        X2 = sorted_coords[i+1][0]
+        Y2 = sorted_coords[i+1][1]
+
+        # Calculate distance between each point, sum for circle perimeter estimation
+        euc_distance = dist((X1, Y1), (X2, Y2))
+        perimeter_est += euc_distance
+
+        # Calculate area of isosceles triangle between each point, sum for circle area estimation
+        tri_area = 0.5*euc_distance*sqrt(R**2-((euc_distance**2)/4))
+        area_est += tri_area
+    return perimeter_est, area_est
+
+
 # Generates a circle depending on the method chosen. Returns points on circle.
 def circle_generation(origin, R, N, method):
     X_points = []
@@ -43,7 +81,7 @@ def circle_generation(origin, R, N, method):
         for n in range(N):
             theta[n] = 2*np.pi*(n/N)
 
-    if method == 2: # Monte Carlo method
+    if method == 2: # Monte Carlo method, random
         rand_numbers = rng(N)
         theta = [2*np.pi*n/(10*N) for n in rand_numbers]
 
@@ -54,7 +92,7 @@ def circle_generation(origin, R, N, method):
 
     plt.figure(figsize=(5,5))       # Plotting circle
     plt.scatter(X_points, Y_points)
-    plt.show()
+    # plt.show()
 
     return X_points, Y_points
 
@@ -95,7 +133,7 @@ def monte_carlo_integration(R, origin, range_N = True, plot = True):
         plt.plot([N[0], N[-1]], [np.pi * R ** 2, np.pi * R ** 2], label='Theoretical Area')
         plt.xlim(N[0], N[-1])
         plt.legend()
-        plt.show()
+        # plt.show()
 
     return A_circle[-1]
 
@@ -108,11 +146,33 @@ def estimate_pi():
 
     return pi_est
 
+
 # Running code
 initialize()
 circle = circle_generation(origin, R, N, method)
+print("Chosen points on circle:", circle[0], circle[1])
+
+if method == 1:
+    fixed_pt_per, fixed_pt_area = fixed_spacing_calcs(circle[0], circle[1])
+    print(f"Using equally spaced points, the perimeter is estimated as {fixed_pt_per}, "
+          f"and the area is estimated as {fixed_pt_area}")
+elif method == 2:
+    random_pt_per, random_pt_area = random_spacing_calcs(circle[0], circle[1])
+    print(f"Using equally spaced points, the perimeter is estimated as {random_pt_per}, "
+          f"and the area is estimated as {random_pt_area}")
+
+
+
+# Extra credit:
+# 2
 monte_carlo_integration(R, origin)
+
+# 3
 pi_est = estimate_pi()
-print(fixed_spacing_calcs(circle[0],circle[1]))
-print(circle[0],circle[1])
-print('Using Monte Carlo integration, pi is estimated to be ' + str(pi_est) + ', which has an error of ' + str(abs(100*(np.pi - pi_est)/np.pi)) + '%.')
+
+print('Using Monte Carlo integration, pi is estimated to be ' + str(pi_est) + ', which has an error of ' +
+      str(abs(100*(np.pi - pi_est)/np.pi)) + '%.')
+
+
+
+
