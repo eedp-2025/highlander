@@ -23,7 +23,7 @@ def initialize():
 
 # Random number generator. The factor of 10 is to allow for non-integer values when implemented.
 def rng(N):
-    rand_numbers = np.random.default_rng(seed=42).choice(10*N, size=N, replace=False)
+    rand_numbers = np.random.default_rng().choice(10*N, size=N, replace=False)
     return rand_numbers
 
 # Actual circumference calc with cpu timing
@@ -192,8 +192,8 @@ if __name__ == "__main__":
         true_area = actual_area(R)
         print(f"The actual circumference is {true_circ}")
         print(f"The actual area is {true_area}")
-        print(f"The difference in actual - estimated circumference is {true_circ - fixed_pt_per}")
-        print(f"The difference in actual - estimated area is {true_area - fixed_pt_area}")
+        print(f"The difference in actual - estimated circumference is {true_circ - fixed_pt_per} (" + str(100*(true_circ-fixed_pt_per)/true_circ) + "%)")
+        print(f"The difference in actual - estimated area is {true_area - fixed_pt_area} (" + str(100*(true_area-fixed_pt_area)/true_area) + "%)")
 
     elif method == 2:
         random_pt_per, random_pt_area = random_spacing_calcs(circle[0], circle[1])
@@ -208,13 +208,13 @@ if __name__ == "__main__":
 
 
     # Extra credit:
+    print('\nExtra credit solutions loading...\n')
     # 2
     monte_carlo_integration(R, origin)
 
     # 3
     pi_est = estimate_pi()
 
-    print()
     print('Using Monte Carlo integration, pi is estimated to be ' + str(pi_est) + ', which has an error of ' +
           str(abs(100*(np.pi - pi_est)/np.pi)) + '%.')
 
