@@ -52,14 +52,14 @@ def fixed_spacing_calcs(X_points, Y_points):
     Y1 = Y_points[0]
     X2 = X_points[1]
     Y2 = Y_points[1]
-    spacing = sqrt((X2-X1)**2 + (Y2-Y1)**2)**0.5
+    spacing = sqrt((X2-X1)**2 + (Y2-Y1)**2)
     atriangle = 0.5*spacing*sqrt(R**2-((spacing**2)/4))
     area_est = atriangle*len(X_points)
     perimeter_est = spacing*len(X_points)
 
     end = time.process_time()
     cpu_time = end - start
-    print(f"The CPU time for the fixed point perimeter and area calculations is {cpu_time:.6f} s")
+    print(f"The CPU time for the fixed point perimeter and area calculations is {cpu_time:.12f} s")
 
     return perimeter_est, area_est
 
