@@ -26,6 +26,23 @@ def rng(N):
     rand_numbers = np.random.default_rng(seed=42).choice(10*N, size=N, replace=False)
     return rand_numbers
 
+# Actual circumference calc with cpu timing
+def actual_circumference(radius: float) -> float:
+    start = time.process_time()
+    circ = 2 * np.pi * radius
+    end = time.process_time()
+    cpu_time = end - start
+    print(f"CPU time for actual circumference calculation: {cpu_time:.6f} s")
+    return circ
+
+# Actual area calc with cpu timing
+def actual_area(radius: float) -> float:
+    start = time.process_time()
+    area = np.pi * (radius ** 2)
+    end = time.process_time()
+    cpu_time = end - start
+    print(f"CPU time for actual area calculation: {cpu_time:.6f} s")
+    return area
 
 # Calculate perimeter and area using fixed points
 def fixed_spacing_calcs(X_points, Y_points):
@@ -171,11 +188,23 @@ if __name__ == "__main__":
         fixed_pt_per, fixed_pt_area = fixed_spacing_calcs(circle[0], circle[1])
         print(f"Using equally spaced points, the perimeter is estimated as {fixed_pt_per}, "
               f"and the area is estimated as {fixed_pt_area}")
+        true_circ = actual_circumference(R)
+        true_area = actual_area(R)
+        print(f"Actual circumference:{true_circ}")
+        print(f"Actual area:{true_area}")
+        print(f"Difference (actual - estimate) circumference: {true_circ - fixed_pt_per}")
+        print(f"Difference (actual - estimate) area: {true_area - fixed_pt_area}")
+
     elif method == 2:
         random_pt_per, random_pt_area = random_spacing_calcs(circle[0], circle[1])
         print(f"Using equally spaced points, the perimeter is estimated as {random_pt_per}, "
               f"and the area is estimated as {random_pt_area}")
-
+        true_circ = actual_circumference(R)
+        true_area = actual_area(R)
+        print(f"Actual circumference:{true_circ}")
+        print(f"Actual area:{true_area}")
+        print(f"Difference (actual - estimate) circumference: {true_circ - random_pt_per}")
+        print(f"Difference (actual - estimate) area: {true_area - random_pt_area}")
 
 
     # Extra credit:
