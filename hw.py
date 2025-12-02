@@ -32,7 +32,7 @@ def actual_circumference(radius: float) -> float:
     circ = 2 * np.pi * radius
     end = time.process_time()
     cpu_time = end - start
-    print(f"CPU time for actual circumference calculation: {cpu_time:.6f} s")
+    print(f"The CPU time for the actual circumference calculation is {cpu_time:.6f} s")
     return circ
 
 # Actual area calc with cpu timing
@@ -41,7 +41,7 @@ def actual_area(radius: float) -> float:
     area = np.pi * (radius ** 2)
     end = time.process_time()
     cpu_time = end - start
-    print(f"CPU time for actual area calculation: {cpu_time:.6f} s")
+    print(f"The CPU time for the actual area calculation is {cpu_time:.6f} s")
     return area
 
 # Calculate perimeter and area using fixed points
@@ -59,7 +59,7 @@ def fixed_spacing_calcs(X_points, Y_points):
 
     end = time.process_time()
     cpu_time = end - start
-    print(f"CPU time for fixed point perimeter and area calculations: {cpu_time:.6f} s")
+    print(f"The CPU time for the fixed point perimeter and area calculations is {cpu_time:.6f} s")
 
     return perimeter_est, area_est
 
@@ -99,7 +99,7 @@ def random_spacing_calcs(X_points, Y_points):
 
     end = time.process_time()
     cpu_time = end - start
-    print(f"CPU time for random point perimeter and area calculations: {cpu_time:.6f} s")
+    print(f"The CPU time for the random point perimeter and area calculations is {cpu_time:.6f} s")
     return perimeter_est, area_est
 
 
@@ -190,10 +190,10 @@ if __name__ == "__main__":
               f"and the area is estimated as {fixed_pt_area}")
         true_circ = actual_circumference(R)
         true_area = actual_area(R)
-        print(f"Actual circumference:{true_circ}")
-        print(f"Actual area:{true_area}")
-        print(f"Difference (actual - estimate) circumference: {true_circ - fixed_pt_per}")
-        print(f"Difference (actual - estimate) area: {true_area - fixed_pt_area}")
+        print(f"The actual circumference is {true_circ}")
+        print(f"The actual area is {true_area}")
+        print(f"The difference in actual - estimated circumference is {true_circ - fixed_pt_per}")
+        print(f"The difference in actual - estimated area is {true_area - fixed_pt_area}")
 
     elif method == 2:
         random_pt_per, random_pt_area = random_spacing_calcs(circle[0], circle[1])
@@ -201,10 +201,10 @@ if __name__ == "__main__":
               f"and the area is estimated as {random_pt_area}")
         true_circ = actual_circumference(R)
         true_area = actual_area(R)
-        print(f"Actual circumference:{true_circ}")
-        print(f"Actual area:{true_area}")
-        print(f"Difference (actual - estimate) circumference: {true_circ - random_pt_per}")
-        print(f"Difference (actual - estimate) area: {true_area - random_pt_area}")
+        print(f"The actual circumference is {true_circ}")
+        print(f"The actual area is {true_area}")
+        print(f"The difference in actual - estimated circumference is {true_circ - random_pt_per}")
+        print(f"The difference in actual - estimated area is {true_area - random_pt_area}")
 
 
     # Extra credit:
